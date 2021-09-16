@@ -35,7 +35,7 @@ const SelectedMoviesGrid = (props) => {
   };
   return (
     <div
-      style={{ "overflow-y": "hidden", "overflow-x": "auto", height: "200px" }}
+      style={{ "overflowY": "hidden", "overflowX": "auto", height: "200px" }}
     >
       <Grid container className={classes.root} spacing={2}>
         <Grid item xs={12}>

@@ -19,7 +19,7 @@ const options = {
 };
 
 const VerticalBar = (props) => {
-  console.log(props);
+  //console.log(props);
   
   const data = {
     labels: props.mov.map(movie=>movie.title),

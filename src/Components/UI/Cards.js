@@ -92,7 +92,7 @@ export default function Cards(prop) {
           </div>
         )}
 
-        <img src={prop.mov.imgurl} alt="test" />
+        <img src={prop.mov.poster} alt="test" />
       </div>
     </div>
   );

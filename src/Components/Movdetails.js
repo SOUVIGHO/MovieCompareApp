@@ -29,7 +29,7 @@ export default function SimpleCard(props) {
   const bull = <span className={classes.bullet}>•</span>;
   const movie = {
     title: props.mov.Title,
-    imgurl:props.mov.Poster,
+    poster:props.mov.Poster,
     rating: props.mov.imdbRating,
   };
   console.log(props.mov.Title);

@@ -1,20 +1,35 @@
 import "./App.css";
-import React, { Fragment } from "react";
+import React from "react";
 import SelectedMoviesGrid from "./Components/UI/SelectedMoviesGrid";
 import Header from "./Components/UI/Header";
 import GraphGrid from "./Components/UI/GraphGrid";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import { useState } from "react";
+import { useState ,useEffect } from "react";
 import { Paper } from "@material-ui/core";
 import AddModal from "./Components/AddModal";
+import { webcall } from "./Webcall";
+
 
 function App() {
   // state for Add Modal which is responsible for showing the Add Movie UI
   const [modal, setmodal] = useState(false);
+  let movielist = [];
+    //initializing selectedmovielist array and state to manage the same
+    const [movies, setmovies] = useState(movielist);
 
-  //initializing selectedmovielist array and state to manage the same
-  const movielist = [];
-  const [movies, setmovies] = useState(movielist);
+  useEffect(()=>{
+    webcall('GET').then(function(result){
+      result.map((mov)=>{
+        localStorage.setItem(mov.title,mov.id);
+        return mov;
+      })
+      setmovies(result);
+    });
+  },[]);
+
+
+
+  
 
   //addHandler to toggle the Add modal UI state
   const addHandler = () => {
@@ -36,11 +51,15 @@ function App() {
   const addHandlers = (moviedetail) => {
     console.log(moviedetail);
     setmovies((prevstate) => {
+      webcall('POST',moviedetail).then(function(result){
+        console.log('res: '+result.id);
+        localStorage.setItem(result.title,result.id);
+      });
       return [
         ...prevstate,
         {
           title: moviedetail.Title,
-          imgurl: moviedetail.Poster,
+          poster: moviedetail.Poster,
           rating: moviedetail.imdbRating,
           graphenabled: false,
         },
@@ -58,6 +77,7 @@ function App() {
       console.log("index:" + index);
       if (index > -1) {
         let newstate = prevstate.filter((mov) => mov !== movie);
+        webcall('DELETE',movie);
         return newstate;
       } else {
         return prevstate;
@@ -71,6 +91,7 @@ function App() {
       let newst = prevstate.map((mov) =>
         mov.title === movshow.title ? movshow : mov
       );
+      webcall('PATCH',movshow);
       return newst;
     });
   };
